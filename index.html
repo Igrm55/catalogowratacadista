@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Verão - IgorValen Distribuidora</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (para ícones de verão) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        :root {
+            --brand-green: #0f8a3a;
+            --brand-green-light: #2ebc5e;
+            --brand-green-darker: #0b5d29;
+            --brand-red: #de1f36;
+            --brand-yellow: #f59e0b;
+            --text: #111111;
+            --bg-soft: #f3f4f6; 
+            --summer-gradient: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,236,179,0.2) 100%);
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--brand-red);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Fundo com toque de verão */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 55vh;
+            min-height: 450px;
+            background: linear-gradient(to bottom, var(--brand-green), var(--brand-green-darker));
+            clip-path: ellipse(100% 100% at 50% 0%);
+            z-index: 0; 
+        }
+        
+        /* Textura sutil */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0 10 C 25 0, 75 20, 100 10" stroke="%23000000" stroke-width="0.8" fill="none" opacity="0.1"/></svg>'),
+                url('data:image/svg+xml;utf8,<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="%23FFFFFF" stroke-width="1"><circle cx="40" cy="40" r="2" opacity="0.2"/></g></svg>');
+            background-size: 100px 20px, 80px 80px;
+            pointer-events: none;
+            z-index: 1; 
+        }
+        
+        #root {
+            position: relative;
+            z-index: 2;
+            padding-bottom: 200px;
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-wave-wrapper {
+            position: relative;
+            padding: 2.5rem 1.5rem;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background-color: var(--brand-green);
+            background-image: var(--summer-gradient);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-wave-wrapper::before, .category-wave-wrapper::after {
+            content: '';
+            position: absolute;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .category-wave-wrapper::before {
+            top: 10%;
+            transform: rotate(4deg);
+        }
+
+        .category-wave-wrapper::after {
+            bottom: 10%;
+            transform: rotate(-4deg);
+        }
+
+        .category-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .wave-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .wave-container::before, .wave-container::after {
+            content: '';
+            position: absolute;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            border-radius: 50% 50% 0 0;
+            background: var(--brand-green);
+        }
+
+        .wave-container::after {
+            opacity: 0.7;
+            bottom: -200px;
+            animation: wave-move-2 15s ease-in-out infinite alternate;
+        }
+
+        .wave-container::before {
+            opacity: 1;
+            bottom: -220px;
+            animation: wave-move-1 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes wave-move-1 {
+            from { transform: translateX(0) rotate(-3deg); }
+            to { transform: translateX(-20px) rotate(-4deg); }
+        }
+        @keyframes wave-move-2 {
+            from { transform: translateX(0) rotate(5deg); }
+            to { transform: translateX(25px) rotate(6deg); }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .wavy-top-connector {
+            position: relative;
+            background-color: white;
+        }
+        .wavy-top-connector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            transform: translateY(-100%);
+            background: white;
+            clip-path: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40'%3e%3cpath fill='white' d='M1440,40H0V16.5C316.51,5.5,602.11,0,720,0s403.49,5.5,720,16.5V40Z'%3e%3c/path%3e%3c/svg%3e");
+            -webkit-clip-path: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 40'%3e%3cpath fill='white' d='M1440,40H0V16.5C316.51,5.5,602.11,0,720,0s403.49,5.5,720,16.5V40Z'%3e%3c/path%3e%3c/svg%3e");
+        }
+
+        .hover-scale {
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+        
+        /* Updated Price Badge Styles */
+        .price-badge {
+            background: white;
+            color: var(--brand-green);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 800;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 20;
+            border: 2px solid var(--brand-green);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+            min-width: 65px;
+        }
+        .price-badge .label {
+            font-size: 0.55rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1px;
+            color: #555;
+        }
+        .price-badge .value {
+            font-size: 0.95rem;
+        }
+        
+        /* Badge para produtos em falta */
+        .out-of-stock-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 25;
+            pointer-events: none;
+        }
+        
+        .out-of-stock-badge {
+            background-color: #ef4444; /* red-500 */
+            color: white;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transform: rotate(-10deg);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: 2px solid white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="wave-container"></div>
+
+    <script type="text/babel">
+        // [2025-11-12] Desafio: Digite "VERÃO" com os olhos fechados nos comentários!
+
+        // ===================================================================
+        // DATA - Atualizado em 20/01/2026
+        // ===================================================================
+        const MOCK_PRODUCTS = [
+            // --- Bebidas Alcoólicas ---
+            { id: '1', name: 'Pitú 965ML com Papelão', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/B5fHNL2y/aguardente-pitu-965ml-1a515249-2151-4db6-a2e5-57208f6a1803.jpg', sortOrder: 1, active: true, price: { cash: '8,30', credit: '9,60' } },
+            { id: '2', name: 'Alcatrão São João da Barra 900ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/PvjZRQcT/134.jpg', sortOrder: 2, active: true, price: { cash: '19,95', credit: '20,35' } },
+            { id: '3', name: 'Cachaça Asa Branca 900ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/vC07C1rt/D-Q-NP-682768-MLA85665355420-062025-O.webp', sortOrder: 3, active: true, price: { cash: '31,95', credit: '32,59' } },
+            { id: '4', name: 'Pitú Lata 350ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/6JLTr2Dh/9064.jpg', sortOrder: 4, active: true, price: { cash: '51,70', credit: '52,73' } },
+            { id: '5', name: 'Pitú de Garrafa 600ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/27yx5ZBb/184178-800-450.webp', sortOrder: 5, active: true, price: { cash: '7,94', credit: '8,10' } },
+            { id: '6', name: 'Aperitivo Campari', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/b0T3DPR/10375-aperitivo-bitter-campari-998ml-1un-20250901154933.png', sortOrder: 6, active: true, price: { cash: '55,70', credit: '57,20' } },
+            { id: '7', name: 'Canelinha da Rocha 900ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/4nyHHwMy/3708eb250af525b1f523081bc7116cd6.webp', sortOrder: 7, active: true, price: { cash: '12,50', credit: '12,65' } },
+            { id: '8', name: 'Vinho Dom Bosco 1LT', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Vinho+Dom+Bosco', sortOrder: 8, active: true, price: { cash: '16,95', credit: '17,29' } },
+            { id: '9', name: 'Gengibre Pérgola da Chapada', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Gengibre+Pérgola', sortOrder: 9, active: true, price: { cash: '7,60', credit: '7,80' } },
+            { id: '10', name: 'Cantina da Serra 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/DfmgKCmx/vinho-coquetel-cantina-da-serra-tinto-suave-embalagem-12x15-lt-preco-unitario-r9-3enygexapi.webp', sortOrder: 10, active: true, price: { cash: '6,00', credit: '6,20' } },
+            { id: '11', name: 'Catuaba Vida Nova', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/j91j5KRh/01-325152-01.webp', sortOrder: 11, active: true, price: { cash: '7,80', credit: '7,96' } },
+            { id: '12', name: 'Whisky Cavalo Branco (White Horse)', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/r2B695NC/45018-1.jpg', sortOrder: 12, active: true, price: { cash: '66,50', credit: '67,80' } },
+            { id: '13', name: 'Conhaque Domus', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Conhaque+Domus', sortOrder: 13, active: true, price: { cash: '11,30', credit: '11,50' } },
+            { id: '14', name: 'Copo Americano', category: 'Outros', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/nNm9sV1y/IMG-0658.jpg', sortOrder: 14, active: true, price: { cash: '1,20', credit: '1,25' } },
+            { id: '15', name: 'Conhaque Domecq', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/5h7zC8sB/51-Ir-C0-JN5a-L.jpg', sortOrder: 15, active: true, price: { cash: '34,99', credit: '35,70' } },
+            { id: '16', name: 'Conhaque Dreher', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/ksGwKgS8/20240629110719-66801517ad651.webp', sortOrder: 16, active: true, price: { cash: '18,95', credit: '19,33' } },
+            { id: '17', name: 'Genebra', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/G4bPGLdH/51r-Oz-Lf4s-ML.jpg', sortOrder: 17, active: true, price: { cash: '25,26', credit: '25,77' } },
+            { id: '18', name: 'Gengibre Vida Nova', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/0V6X2rpH/Gemini-Generated-Image-jd60eajd60eajd60.png', sortOrder: 18, active: true, price: { cash: '7,45', credit: '7,60' } },
+            { id: '19', name: 'Jose Cuervo 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Jose+Cuervo', sortOrder: 19, active: true, price: { cash: '95,00', credit: '96,90' } },
+            { id: '20', name: 'Jurubeba', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Cs9Z7Zzs/aperitivo-jurubeba-leao-do-norte-600ml-1959-1-6a7a79b098d66071f5d0ad6a07cacf14.webp', sortOrder: 20, active: true, price: { cash: '13,00', credit: '13,26' } },
+            { id: '21', name: 'Whisky Black Label', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Psf9MdzP/001.webp', sortOrder: 21, active: true, price: { cash: '137,00', credit: '139,74' } },
+            { id: '22', name: 'Bolibol 680G', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Bolibol', sortOrder: 22, active: true, price: { cash: '23,40', credit: '23,87' } },
+            { id: '23', name: 'Paratudo', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/mV5Jcph9/15126653667-1065-amargo-paratudo-900ml.jpg', sortOrder: 23, active: true, price: { cash: '13,15', credit: '13,41' } },
+            { id: '24', name: 'Whisky Passport', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Tx12qb5m/51-UYCr-Fpn5-S-UF1000-1000-QL80.jpg', sortOrder: 24, active: true, price: { cash: '41,50', credit: '41,75' } },
+            { id: '25', name: 'Vinho Pérgola 1LT', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/pjykdnSp/Vinho-Brasileiro-Pergola-Tinto-Suave-1l.png', sortOrder: 25, active: true, price: { cash: '21,70', credit: '22,13' } },
+            { id: '26', name: 'Conhaque Presidente', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Z6437SW4/9375-conhaque-presidente-900ml.jpg', sortOrder: 26, active: true, price: { cash: '13,50', credit: '13,77' } },
+            { id: '27', name: 'Quinta do Morgado 1 Litro', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/spJ1bcDy/quinta-do-morgado-tinto-suave-1l.jpg', sortOrder: 27, active: true, price: { cash: '21,25', credit: '21,68' } },
+            { id: '28', name: 'Quinta do Morgado 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/j0dGyjr/quinta-do-morgado-tinto-suave.jpg', sortOrder: 28, active: true, price: { cash: '14,45', credit: '14,74' } },
+            { id: '29', name: 'Whisky Red Label', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Tq1SbBdG/bo839.png', sortOrder: 29, active: true, price: { cash: '87,50', credit: '89,25' } },
+            { id: '30', name: 'Ice Syn', category: 'Bebidas alcoólicas', details: [{flavor: 'Limão'}], imageUrl: 'https://i.ibb.co/WpjLmXH7/Syn-Ice-300-PET-Limao-25a1a95d.png', sortOrder: 30, active: true, price: { cash: '15,70', credit: '16,01' } },
+            { id: '31', name: 'Velho Barreiro', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Qj1Sg9ws/10987-cachaca-velho-barreiro-910ml-1un-20250901154933.png', sortOrder: 31, active: true, price: { cash: '15,40', credit: '15,71' } },
+            { id: '32', name: 'Beefeater London 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Beefeater', sortOrder: 32, active: true, price: { cash: '80,50', credit: '81,00' } },
+            { id: '33', name: 'Vodka Natasha', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/7xs3PBVR/258980-1.webp', sortOrder: 33, active: true, price: { cash: '16,20', credit: '16,52' } },
+            { id: '34', name: 'Vinho Pérgola 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Vinho+Pergola+750', sortOrder: 34, active: true, price: { cash: '17,80', credit: '18,16' } },
+            { id: '35', name: 'Whisky Black Stone com Copo', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/0pnMv0XZ/268299.webp', sortOrder: 35, active: true, price: { cash: '22,90', credit: '23,10' } },
+            
+            // --- Bomboneire / Alimentos ---
+            { id: '36', name: 'Bala Ice Kiss Sortida', category: 'Bomboneire', details: [{flavor: 'Sortida'}], imageUrl: 'https://i.ibb.co/7dVMMzqJ/bala-dura-icekiss-sortida-500g-16675-1-3b5416d1fada308118535e1796dcd3e3.webp', sortOrder: 36, active: true, price: { cash: '7,90', credit: '8,06' } },
+            { id: '37', name: 'Chiclete Blong', category: 'Bomboneire', details: [{flavor: 'Sortido'}], imageUrl: 'https://i.ibb.co/fGt4CMcz/Gemini-Generated-Image-rvylr0rvylr0rvyl.png', sortOrder: 37, active: true, price: { cash: '7,10', credit: '7,25' } },
+            { id: '38', name: 'Bala Santa Fé Canela', category: 'Bomboneire', details: [{flavor: 'Canela'}], imageUrl: 'https://i.ibb.co/Ds3YDxj/128.jpg', sortOrder: 38, active: true, price: { cash: '9,60', credit: '9,79' } },
+            { id: '39', name: 'Halls', category: 'Bomboneire', details: [{flavor: 'Vários Sabores'}], imageUrl: 'https://i.ibb.co/9kh4dc9C/sg-11134201-7qvea-li0fr8iza4l467.jpg', sortOrder: 39, active: true, price: { cash: '24,76', credit: '25,50' } },
+            { id: '40', name: 'Pirulito Mega Lito', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/T9m5zn7/1617230123c7i5abc2cd.png', sortOrder: 40, active: true, price: { cash: '19,45', credit: '19,85' } },
+            { id: '41', name: 'Pipoca Doce', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/5X1zGGV0/Goxtoso-pipoca.png', sortOrder: 41, active: true, price: { cash: '8,90', credit: '9,10' } },
+            { id: '42', name: 'Salgadinho 28G', category: 'Bomboneire', details: [{flavor: 'Vários Sabores'}], imageUrl: 'https://i.ibb.co/7J7yjqvV/Goxtoso-Assado.png', sortOrder: 42, active: true, price: { cash: '6,70', credit: '6,80' } },
+            { id: '43', name: 'Bala Sortida Mastigável', category: 'Bomboneire', details: [{flavor: 'Sortida'}], imageUrl: 'https://i.ibb.co/q3CLvQPP/df00043f0bf6a689281a7536ebbdd5d6.webp', sortOrder: 43, active: true, price: { cash: '7,30', credit: '7,45' } },
+            { id: '44', name: 'Torresmo', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Hp9txykH/l-9aee4631cfa14377af45cd51cdd3a79f.png', sortOrder: 44, active: true, price: { cash: '21,00', credit: '21,50' } },
+            { id: '45', name: 'Trident (Tride)', category: 'Bomboneire', details: [{flavor: 'Sortido'}], imageUrl: 'https://i.ibb.co/5hYWG1LZ/Gemini-Generated-Image-he1fa1he1fa1he1f.png', sortOrder: 45, active: true, price: { cash: '37,00', credit: '37,50' } },
+            { id: '46', name: 'Doce Molecão', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Doce+Molecão', sortOrder: 46, active: true, price: { cash: '13,70', credit: '13,97' } },
+            { id: '47', name: 'Kakauzinho', category: 'Bomboneire', details: [{flavor: 'Chocolate'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Kakauzinho', sortOrder: 47, active: true, price: { cash: '17,70', credit: '17,90' } },
+            { id: '48', name: 'Paçoca Bálsamo com 150 Und', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Paçoca+150un', sortOrder: 48, active: true, price: { cash: '56,00', credit: '57,12' } },
+            { id: '49', name: 'Paçoca Bálsamo com 50 Und', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/fzwM1rPm/Gemini-Generated-Image-klafw5klafw5klaf.png', sortOrder: 49, active: true, price: { cash: '17,00', credit: '17,34' } },
+            { id: '50', name: 'Chocolate Puríssimo', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/6cwtwx2Y/dfe03fd9-cb38-4cd9-b839-d597f251e29f-4380-000854-2966c599cff5b765fd17410129207602-1024-1024.jpg', sortOrder: 50, active: true, price: { cash: '16,15', credit: '17,03' } },
+            { id: '51', name: 'Pirulito Big Pop', category: 'Bomboneire', details: [{flavor: 'Frutas'}], imageUrl: 'https://i.ibb.co/L3GybXc/pirulito-big-pop-frutas-sortidas-c-rech-mastigavel-500g-17525-1-b3db72729bb08998eab24f4c6a2c86c3.webp', sortOrder: 51, active: true, price: { cash: '9,50', credit: '9,69' } },
+            { id: '52', name: 'Salgadinho Goxtoso 20x40', category: 'Bomboneire', details: [{flavor: 'Sortido'}], imageUrl: 'https://i.ibb.co/4RKPy3cS/Goxtoso-Xeeks.png', sortOrder: 52, active: true, price: { cash: '20,60', credit: '21,01' } },
+            { id: '53', name: 'Pirulito Cherry Pop', category: 'Bomboneire', details: [{flavor: 'Cereja'}], imageUrl: 'https://i.ibb.co/Ngx4Kscp/Pirulito-Mix-Cherry-Pop-700-Gr-c50-unid-Simas-3.webp', sortOrder: 53, active: true, price: { cash: '15,98', credit: '16,30' } },
+            { id: '54', name: 'Pacokids com 67 Und', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Pacokids', sortOrder: 54, active: true, price: { cash: '17,00', credit: '17,34' } },
+            { id: '55', name: 'Incenso', category: 'Outros', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/SwZ3375V/Whats-App-Image-2025-12-16-at-15-02-04.jpg', sortOrder: 55, active: true, price: { cash: '5,99', credit: '6,11' } },
+            { id: '56', name: 'Cocada Recheada Pé de Serra', category: 'Bomboneire', details: [{flavor: 'Recheada'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Cocada', sortOrder: 56, active: true, price: { cash: '16,00', credit: '16,32' } },
+            { id: '57', name: 'Chiclete Tattoo', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x400/f3f4f6/1f2937?text=Chiclete+Tattoo', sortOrder: 57, active: true, price: { cash: '7,85', credit: '8,01' } },
+
+            // --- Bebidas Não Alcoólicas ---
+            { id: '58', name: 'Refrigerante Goob 1 Litro', category: 'Bebidas não alcoólicas', details: [{flavor: 'Guaraná'}, {flavor: 'Laranja'}], imageUrl: 'https://i.ibb.co/Fkj306JQ/Gemini-Generated-Image-78eqyh78eqyh78eq.png', sortOrder: 58, active: true, price: { cash: '19,95', credit: '20,35' } },
+            { id: '60', name: 'Refrigerante Goob 2 Litros', category: 'Bebidas não alcoólicas', details: [{flavor: 'Guaraná'}, {flavor: 'Laranja'}, {flavor: 'Uva'}, {flavor: 'Limão'}], imageUrl: 'https://i.ibb.co/23PSr9s0/Gemini-Generated-Image-a5jkuba5jkuba5jk.png', sortOrder: 60, active: true, price: { cash: '25,80', credit: '26,30' } },
+            { id: '64', name: 'Refrigerante Goob 230ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}, {flavor: 'Guaraná'}, {flavor: 'Laranja'}, {flavor: 'Uva'}, {flavor: 'Limão'}, {flavor: 'Morango c/ Limão'}], imageUrl: 'https://i.ibb.co/1JrZ17L7/Gemini-Generated-Image-fn1togfn1togfn1t.png', sortOrder: 64, active: true, price: { cash: '13,86', credit: '14,13' } },
+            { id: '70', name: 'Drink-T 300ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Limão'}, {flavor: 'Pêssego'}], imageUrl: 'https://i.ibb.co/5XN7dvCf/Gemini-Generated-Image-fr5a3efr5a3efr5a.png', sortOrder: 70, active: true, price: { cash: '26,30', credit: '26,50' } },
+            { id: '72', name: 'EnerUp 250ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/bjbfp4Xh/ISM-SITE-BANNER-730-X400-ENERUP-250-ML-640x400.png', sortOrder: 72, active: true, price: { cash: '32,90', credit: '33,56' } },
+            { id: '73', name: 'EnerUp 269ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/QFn2KWcD/Gemini-Generated-Image-vx1r3mvx1r3mvx1r.png', sortOrder: 73, active: true, price: { cash: '24,85', credit: '25,35' } },
+            { id: '74', name: 'EnerUp 2 Litros', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/8LCtQwjT/ISM-SITE-BANNER-730-X400-ENERUP-2-L-640x400.png', sortOrder: 74, active: true, price: { cash: '36,00', credit: '36,70' } },
+            { id: '75', name: 'GuaranUp 200ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/Y7Rm31tR/ISM-SITE-BANNER-730-X400-GUARANUP-GARRAFA-640x400.png', sortOrder: 75, active: true, price: { cash: '19,00', credit: '19,38' } },
+            { id: '76', name: 'GuaranUp Copo 290ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/3mSgbrqw/ISM-SITE-BANNER-730-X400-GUARANUP-COPO-640x400.png', sortOrder: 76, active: true, price: { cash: '28,95', credit: '29,53' } },
+            { id: '77', name: 'Suco Yulo 400ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Laranja'}, {flavor: 'Uva'}], imageUrl: 'https://i.ibb.co/CKjz1QC7/Gemini-Generated-Image-d5xxjnd5xxjnd5xx.png', sortOrder: 77, active: true, price: { cash: '23,85', credit: '24,35' } },
+            { id: '79', name: 'Suco Yulo 1,5L Cítrico', category: 'Bebidas não alcoólicas', details: [{flavor: 'Cítrico'}], imageUrl: 'https://i.ibb.co/0jPVR7XP/172760-800-auto.webp', sortOrder: 79, active: true, price: { cash: '30,30', credit: '30,90' } },
+            { id: '80', name: 'Suco Yulo 200ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Laranja'}, {flavor: 'Uva'}], imageUrl: 'https://i.ibb.co/CKjz1QC7/Gemini-Generated-Image-d5xxjnd5xxjnd5xx.png', sortOrder: 80, active: true, price: { cash: '17,60', credit: '17,70' } },
+            { id: '82', name: 'Suco Yulo Tetra Pack 200ML', category: 'Bebidas não alcoólicas', details: [{flavor: 'Laranja'}, {flavor: 'Uva'}, {flavor: 'Morango'}], imageUrl: 'https://i.ibb.co/YT77Lzr2/Gemini-Generated-Image-7p6w207p6w207p6w.png', sortOrder: 82, active: true, price: { cash: '37,38', credit: '38,10' } },
+            { id: '85', name: 'Água Lôa 1,5L', category: 'Bebidas não alcoólicas', details: [{flavor: 'Sem Gás'}], imageUrl: 'https://i.ibb.co/tpGcGm1d/Gemini-Generated-Image-nrloexnrloexnrlo.png', sortOrder: 85, active: true, price: { cash: '13,75', credit: '13,95' } },
+            { id: '86', name: 'Água Lôa 500ML Sem Gás', category: 'Bebidas não alcoólicas', details: [{flavor: 'Sem Gás'}], imageUrl: 'https://i.ibb.co/JFzqc2QF/sem-gas-1.png', sortOrder: 86, active: true, price: { cash: '11,90', credit: '12,15' } },
+            { id: '87', name: 'Água Lôa 500ML Com Gás', category: 'Bebidas não alcoólicas', details: [{flavor: 'Com Gás'}], imageUrl: 'https://i.ibb.co/j9cdnpg7/com-gas-1.png', sortOrder: 87, active: true, price: { cash: '17,70', credit: '18,05' } },
+            { id: '88', name: 'Glow 269ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Limão'}], imageUrl: 'https://i.ibb.co/YBgGsXmQ/glow-lata-269ml.png', sortOrder: 88, active: true, price: { cash: '24,50', credit: '24,99' } },
+            { id: '89', name: 'Glow 275ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Limão'}], imageUrl: 'https://i.ibb.co/rC0thLK/Gemini-Generated-Image-bvkaw1bvkaw1bvka.png', sortOrder: 89, active: true, price: { cash: '26,50', credit: '26,50' } },
+            { id: '90', name: 'Composto Lácteo 200G', category: 'Bomboneire', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/LDQhfcH6/gostolac-thumb.png', sortOrder: 90, active: true, price: { cash: '3,80', credit: '3,90' } },
+            { id: '91', name: 'Copo Descartável', category: 'Outros', details: [{flavor: 'Tradicional'}], imageUrl: 'https://i.ibb.co/RTQ6dcN2/223-1.webp', sortOrder: 91, active: true, price: { cash: '3,99', credit: '4,11' } },
+            { id: '92', name: 'Vinho Colheita do Sul 1LT', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Colheita+do+Sul', sortOrder: 92, active: true, price: { cash: '17,70', credit: '18,05' } },
+            { id: '93', name: 'Vinho Chilano 750ML', category: 'Bebidas alcoólicas', details: [{flavor: 'Tradicional'}], imageUrl: 'https://placehold.co/400x600/f3f4f6/1f2937?text=Vinho+Chilano', sortOrder: 93, active: true, price: { cash: '23,50', credit: '23,97' } },
+            { id: '94', name: 'Salgadinho 85G', category: 'Bomboneire', details: [{flavor: 'Sortido'}], imageUrl: 'https://i.ibb.co/4gtTH7sz/Gemini-Generated-Image-2p7o242p7o242p7o.png', sortOrder: 94, active: true, price: { cash: '15,00', credit: '15,25' } },
+        ];
+        
+        // --- Improved Persuasive Texts ---
+        const getPersuasiveText = (product) => {
+            const name = product.name.toLowerCase();
+            const category = product.category;
+
+            if (name.includes('goob')) return 'Refrescância garantida! Goob é o refrigerante que combina sabor intenso com o melhor custo-benefício.';
+            if (name.includes('enerup') || name.includes('ener up')) return 'Energia pura para o verão! Ener Up oferece o impulso necessário para curtir o dia e a noite.';
+            if (name.includes('lôa')) return 'Hidratação essencial. Água Mineral Lôa, pura e leve, é indispensável nos dias quentes.';
+            if (name.includes('yulo')) return 'Sabor da fruta de verdade! Yulo é a escolha saudável e refrescante para a família.';
+            
+            if (name.includes('pitu') || name.includes('pitú')) return 'A cachaça mais amada do Brasil! Pitú é tradição e liderança de mercado. Item obrigatório em qualquer distribuidora.';
+            if (name.includes('montilla')) return 'O Rum que faz a festa. Montilla é versátil para drinks e muito popular.';
+            if (name.includes('vodka')) return 'Pureza e versatilidade. Vodkas de qualidade para os melhores drinks de verão.';
+            if (name.includes('whisky') || name.includes('cavalo branco') || name.includes('black label')) return 'Sofisticação e sabor marcante. Whiskies selecionados para quem aprecia qualidade.';
+            if (name.includes('vinho') || name.includes('pergula') || name.includes('quinta') || name.includes('dom bosco')) return 'Vinhos selecionados para momentos especiais. Opções que agradam todos os paladares.';
+            
+            if (category === 'Bomboneire' && (name.includes('bala') || name.includes('halls') || name.includes('trident'))) return 'Doçura que vende fácil! O checkout perfeito para aumentar o ticket médio.';
+            if (category === 'Bomboneire' && (name.includes('chiclete') || name.includes('chicle') || name.includes('tattoo'))) return 'Sabor que dura muito mais! Chicletes amados por crianças e adultos.';
+            if (category === 'Bomboneire' && (name.includes('pirulito') || name.includes('cherry'))) return 'A alegria da criançada! Pirulitos coloridos e deliciosos.';
+            if (category === 'Bomboneire' && (name.includes('salgadinho') || name.includes('amendoim') || name.includes('torresmo'))) return 'O petisco ideal! Crocância e sabor para acompanhar aquela bebida gelada.';
+            
+            return 'Este produto de alta qualidade é uma excelente adição ao seu mix, garantindo satisfação do cliente e excelente retorno financeiro.';
+        };
+
+        let MOCK_SETTINGS = {
+            id: 1,
+            categoriesOrder: ['Bebidas não alcoólicas', 'Bebidas alcoólicas', 'Bomboneire', 'Outros'],
+        };
+
+        const normalizeText = (text = '') => {
+            return text
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
+        };
+
+        const api = {
+            getCatalog: async (q) => {
+                let productsWithText = MOCK_PRODUCTS.map(p => ({
+                    ...p,
+                    persuasiveText: getPersuasiveText(p)
+                }));
+
+                let products = productsWithText.filter(p => p.active);
+                if(q?.q) {
+                    const searchTerm = normalizeText(q.q);
+                    products = products.filter(p => 
+                        normalizeText(p.name).includes(searchTerm) || 
+                        p.details?.some(d => normalizeText(d.flavor).includes(searchTerm))
+                    );
+                }
+                if(q?.category) {
+                        products = products.filter(p => p.category === q.category);
+                }
+                return { products, settings: MOCK_SETTINGS };
+            },
+        };
+    </script>
+    
+    <!-- =================================================================== -->
+    <!-- React Application                                                   -->
+    <!-- =================================================================== -->
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        // --- Icon Components ---
+        const IconLupa = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
+        const IconInstagram = ({size = 24}) => <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
+        const IconSun = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" className={className}><path d="M128,60a68,68,0,1,0,68,68A68.07,68.07,0,0,0,128,60Zm0,120a52,52,0,1,1,52-52A52.06,52.06,0,0,1,128,180ZM96,24H160a4,4,0,0,0,0-8H96a4,4,0,0,0,0,8ZM53.5,47.8l6.3-4.6a4,4,0,0,0-4.6-6.4l-6.4,4.6a4,4,0,0,0,4.7,6.4ZM24,160h64a4,4,0,0,0,0-8H24a4,4,0,0,0,0,8ZM48.8,206.5l4.6,6.3a4,4,0,1,0,6.4-4.6l-4.6-6.4a4,4,0,0,0-6.4,4.7ZM160,232H96a4,4,0,0,0,0-8h64a4,4,0,0,0,0-8ZM207.2,195.2l-4.6,6.4a4,4,0,0,0,6.4,4.6l4.6-6.3a4,4,0,0,0-6.4-4.7ZM232,160h-64a4,4,0,0,0,0-8h64a4,4,0,0,0,0-8ZM202.5,41.4l-6.3,4.6a4,4,0,0,0,4.7,6.4l6.4-4.6a4,4,0,0,0-4.8-6.4Z" transform="scale(1.3) translate(-30 -30)"/></svg>;
+
+        const CategoryIcon = ({ src, alt, isActive, size = 'w-5 h-5' }) => (
+            <img 
+                src={src} 
+                alt={alt} 
+                className={`${size} object-contain transition-all duration-200 ${isActive ? 'filter brightness-0 invert' : ''}`} 
+            />
+        );
+
+        const CATEGORY_ICONS_DATA = {
+          'Todas': { src: "https://i.ibb.co/whs6NrTS/categoria.png", alt: "Ícone de todas as categorias" },
+          'Bebidas não alcoólicas': { src: "https://i.ibb.co/Mk9vS5Bc/refrigerante.png", alt: "Ícone de refrigerante" },
+          'Bebidas alcoólicas': { src: "https://i.ibb.co/RT9KLfYL/cerveja.png", alt: "Ícone de cerveja" },
+          'Bomboneire': { src: "https://i.ibb.co/TzXk30F/doces-embrulhados.png", alt: "Ícone de bombom" },
+          'Cigarro': { src: "https://i.ibb.co/Xx3KRHhk/cigarro-1.png", alt: "Ícone de cigarro" },
+          'Outros': { src: "https://i.ibb.co/HLMS4Dh5/reuso.png", alt: "Ícone de outros produtos" },
+        };
+        
+        const ProductDetailModal = ({ product, onClose, showPrices }) => {
+            if (!product) return null;
+
+            return (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 transition-opacity duration-300 p-4"
+                    onClick={onClose}
+                >
+                    <div 
+                        className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden" 
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Left Side: Text */}
+                        <div className="w-full md:w-1/2 bg-gray-100 p-6 md:p-8 flex flex-col justify-center order-2 md:order-1">
+                            <h3 className="text-2xl lg:text-3xl font-bold mb-3" style={{color: 'var(--brand-green)'}}>
+                                {product.name}
+                            </h3>
+                            <p className="text-gray-600 text-sm lg:text-base leading-relaxed">
+                                {product.persuasiveText}
+                            </p>
+                             {(product.details && product.details.length > 0) && (
+                                <div className="mt-4">
+                                    <p className="font-bold text-base" style={{color: 'var(--brand-red)'}}>
+                                        {product.details.length > 1 ? 'Opções:' : 'Opção:'}
+                                    </p>
+                                    <p className="text-sm text-gray-700">
+                                        {(product.details || []).map(detail => detail.flavor).join(', ')}
+                                    </p>
+                                </div>
+                            )}
+
+                            {product.outOfStock ? (
+                                <div className="mt-6 border-t pt-4 border-gray-300">
+                                    <span className="text-2xl font-bold text-red-500 uppercase tracking-widest border-2 border-red-500 px-4 py-2 rounded-lg inline-block transform -rotate-2">
+                                        Produto em Falta
+                                    </span>
+                                </div>
+                            ) : (
+                                product.price && showPrices && (
+                                    <div className="mt-6 border-t pt-4 border-gray-300">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-gray-600 font-medium">Preço à vista:</span>
+                                            <span className="text-2xl font-bold text-green-700">R$ {product.price.cash}</span>
+                                        </div>
+                                        <div className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-500 font-medium">Preço a prazo:</span>
+                                            <span className="text-xl font-bold" style={{color: 'var(--brand-yellow)'}}>R$ {product.price.credit}</span>
+                                        </div>
+                                    </div>
+                                )
+                            )}
+                        </div>
+
+                        {/* Right Side: Image */}
+                        <div className="w-full md:w-1/2 bg-white p-6 md:p-8 flex items-center justify-center order-1 md:order-2 relative">
+                            {product.outOfStock && (
+                                <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold z-10 shadow-lg">
+                                    INDISPONÍVEL
+                                </div>
+                            )}
+                            <img
+                                src={product.imageUrl}
+                                alt={product.name}
+                                className={`w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 object-contain ${product.outOfStock ? 'opacity-50 grayscale' : ''}`}
+                            />
+                        </div>
+
+                        <button
+                            onClick={onClose}
+                            className="absolute top-3 right-3 bg-white text-gray-700 rounded-full p-2 shadow-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white z-30"
+                            aria-label="Fechar"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Page Components ---
+        const Header = () => {
+            return (
+                <header className="sticky top-0 z-40 shadow-sm" style={{backgroundColor: 'var(--brand-green)', backgroundImage: 'linear-gradient(to right, var(--brand-green), var(--brand-green-light))'}}>
+                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-24">
+                        <div className="flex-1 flex justify-start items-center gap-2">
+                             <div className="transform hover:scale-105 transition-transform duration-300">
+                                 <a href="#" onClick={(e) => { e.preventDefault(); window.location.reload(); }}>
+                                     <img src="https://i.ibb.co/Fb94vFGd/Chat-GPT-Image-20-de-jan-de-2026-12-41-03.png" alt="IgorValen Distribuidora" className="h-20 w-auto object-contain drop-shadow-md" />
+                                 </a>
+                             </div>
+                        </div>
+                        
+                        <div className="flex-1 flex justify-end items-center px-2">
+                            <a href="https://www.instagram.com/distribuidora_igorvalen" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-white transition-all duration-300 transform hover:scale-105 bg-white bg-opacity-10 py-2 px-4 rounded-full border border-white border-opacity-20 hover:bg-opacity-20">
+                                <IconInstagram size={24} />
+                                <span className="font-bold text-sm sm:text-lg tracking-wider whitespace-nowrap hidden sm:inline">@distribuidora_igorvalen</span>
+                            </a>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="mt-16 py-8 text-center text-sm text-gray-600 bg-white bg-opacity-80 backdrop-filter backdrop-blur-sm rounded-t-3xl shadow-inner">
+                <div className="flex justify-center items-center gap-2 mb-2">
+                    <i className="ph-sun text-yellow-500 text-xl"></i>
+                    <span className="font-semibold text-green-800">Verão 2026 IgorValen</span>
+                </div>
+                © 2026 IgorValen Distribuidora. Todos os direitos reservados.
+            </footer>
+        );
+
+        const ProductCardSkeleton = () => (
+            <div className="bg-white rounded-3xl shadow-md overflow-hidden animate-pulse">
+                <div className="bg-gray-200 h-48 w-full"></div>
+                <div className="p-4">
+                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full"></div>
+                </div>
+            </div>
+        );
+
+        // --- ZOOM LOGIC CONFIGURATION ---
+        // 1. Excluded: No Zoom (scale-100)
+        const EXCLUDED_FROM_ZOOM = [
+            
+        ];
+
+        // 2. Super Zoom: Scale 2.3x (Requested "aumentar bastante")
+        const SUPER_ZOOM_IDS = [
+            '74',        // Enerup 2L
+            '72',        // Enerup 250ML
+            '76',        // Guarana+ açaí Guaran UP de copo 290 ML
+            '75',        // Guarana+ açaí Guaran UP 200 ML
+            '5',         // Pitu de Garrafa 600 ML
+            '30'         // Ice Syn
+        ];
+
+        // 3. Slight Zoom: Scale 1.9x (Requested "aumentar só um pouquinho")
+        const SLIGHT_ZOOM_IDS = [
+            
+        ];
+
+        const ProductCard = ({ product, onProductClick, showPrices }) => {
+            const handleKeyPress = (e) => {
+                if (e.key === 'Enter') {
+                    onProductClick(product);
+                }
+            };
+
+            // Determine Scale Class
+            let imgZoomClass = 'scale-[1.7]'; // Default Zoom
+
+            if (EXCLUDED_FROM_ZOOM.includes(product.id)) {
+                imgZoomClass = 'scale-100';
+            } else if (SUPER_ZOOM_IDS.includes(product.id)) {
+                imgZoomClass = 'scale-[2.3]'; // Big Zoom
+            } else if (SLIGHT_ZOOM_IDS.includes(product.id)) {
+                imgZoomClass = 'scale-[1.9]'; // Slight Zoom
+            }
+
+            return (
+                <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => onProductClick(product)}
+                    onKeyPress={handleKeyPress}
+                    className="bg-white rounded-3xl shadow-md overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-full group cursor-pointer focus:outline-none border border-gray-100"
+                >
+                    {/* Added p-6 to force uniform image containment */}
+                    <div className="relative h-48 overflow-hidden bg-white flex items-center justify-center p-6">
+                        {product.outOfStock ? (
+                            <div className="out-of-stock-overlay">
+                                <span className="out-of-stock-badge">EM FALTA</span>
+                            </div>
+                        ) : (
+                            product.price && showPrices && (
+                                <div className="price-badge">
+                                    <span className="label">À Vista</span>
+                                    <span className="value">R$ {product.price.cash}</span>
+                                </div>
+                            )
+                        )}
+                        <img
+                            loading="lazy"
+                            src={product.imageUrl}
+                            alt={product.name}
+                            className={`max-w-full max-h-full object-contain transform transition-transform duration-300 ${imgZoomClass} ${product.outOfStock ? 'opacity-50 grayscale' : ''}`}
+                        />
+                    </div>
+
+                    <div className="p-3 flex-grow flex flex-col justify-between bg-white relative z-10">
+                        <div>
+                            <h3 className="font-bold text-base md:text-lg mb-2 text-green-800 group-hover:text-green-600 transition-colors duration-300 line-clamp-2 leading-tight">{product.name}</h3>
+                            {(product.details && product.details.length > 0) && (
+                                <div className="mt-1 mb-2">
+                                    <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">
+                                         {product.details.length > 1 ? 'Sabores Disponíveis' : 'Sabor'}
+                                    </p>
+                                    <p className="text-xs text-gray-700 leading-tight truncate">
+                                        {(product.details || []).map(detail => detail.flavor).join(', ')}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                        
+                        <div className="mt-auto">
+                            {product.outOfStock ? (
+                                <div className="mt-2 pt-2 border-t border-gray-100 text-center">
+                                    <span className="text-sm font-bold text-red-500 uppercase">Indisponível no momento</span>
+                                </div>
+                            ) : (
+                                product.price && showPrices && (
+                                    <div className="mt-2 pt-2 border-t border-gray-100">
+                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-1">
+                                            <span className="font-extrabold text-[0.65rem] uppercase tracking-wide text-gray-500">A PRAZO</span>
+                                            <div className="flex items-center gap-1 whitespace-nowrap">
+                                                <span className="font-bold text-xs" style={{color: 'var(--brand-yellow)'}}>R$</span>
+                                                <span className="font-bold text-base sm:text-lg" style={{color: 'var(--brand-yellow)'}}>{product.price.credit}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            )}
+                            <div className="mt-2 text-right">
+                                <span className="text-[10px] font-semibold text-green-600 group-hover:text-green-800 transition-colors uppercase tracking-wider flex items-center justify-end gap-1">
+                                    Ver Detalhes <i className="ph-caret-right"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        const HomePage = ({ loading, groupedProducts, allCategories, activeCategory, setActiveCategory, setQuery, onProductClick, query, showPrices, setShowPrices }) => {
+            const searchInputRef = useRef(null);
+
+            const handleClearSearch = () => {
+                setQuery('');
+                setActiveCategory(null);
+                if(searchInputRef.current) {
+                    searchInputRef.current.value = '';
+                }
+            }
+
+            return (
+                <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+                    { !query && !activeCategory && (
+                        <>
+                            <div className="my-8 sm:my-10 mb-12 sm:mb-16 animate-fade-in-down">
+                                <div className="bg-white bg-opacity-95 p-6 sm:p-8 rounded-3xl shadow-xl text-center backdrop-filter backdrop-blur-sm border-2 border-green-100 relative overflow-hidden">
+                                     <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                                        <i className="ph-sun-dim text-8xl text-yellow-500"></i>
+                                     </div>
+                                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4" style={{color: 'var(--brand-green)'}}>
+                                        Verão de Ofertas IgorValen
+                                    </h1>
+                                    <p className="text-base sm:text-lg md:text-xl max-w-2xl mx-auto text-gray-600">
+                                        Refresque seu estoque com os melhores preços da estação!
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="my-12 text-center">
+                                <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-white flex items-center justify-center gap-2" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.5)'}}>
+                                    <i className="ph-seal-check text-yellow-400"></i> Nossas Certificações
+                                </h2>
+                                <p className="max-w-2xl mx-auto mb-8 text-white font-medium" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.4)'}}>
+                                    Qualidade garantida e compromisso com o consumidor.
+                                </p>
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="text-center flex flex-col items-center p-2 hover-scale">
+                                        <img src="https://group-ism.com/br/wp-content/uploads/2023/07/ism-9001.png" alt="Selo ISO 9001" className="h-20 sm:h-28 mb-4 filter drop-shadow-lg"/>
+                                    </div>
+                                    <div className="text-center flex flex-col items-center p-2 hover-scale">
+                                        <img src="https://group-ism.com/br/wp-content/uploads/2023/07/ism-14001.png" alt="Selo ISO 14001" className="h-20 sm:h-28 mb-4 filter drop-shadow-lg"/>
+                                    </div>
+                                    <div className="text-center flex flex-col items-center p-2 hover-scale">
+                                    <img src="https://group-ism.com/br/wp-content/uploads/2023/07/ism-45001-ES.png" alt="Selo ISO 45001" className="h-20 sm:h-28 mb-4 filter drop-shadow-lg"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mb-10 rounded-3xl overflow-hidden border-4 border-green-600 shadow-2xl transform hover:scale-[1.01] transition-transform duration-500">
+                                <a href="https://ibb.co/S7vWZ4pP" target="_blank" rel="noopener noreferrer">
+                                    <img 
+                                        src="https://i.ibb.co/qF1X23wd/Chat-GPT-Image-8-de-jan-de-2026-16-48-01.png" 
+                                        alt="Banner promocional de Verão" 
+                                        className="w-full h-auto block"
+                                        onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/1200x300/1f2937/ffffff?text=Banner+de+Verão'; }}
+                                    />
+                                </a>
+                            </div>
+                        </>
+                    )}
+                    
+                     <div className="panel p-6 mb-10 border-4 border-green-600 bg-white">
+                         <div className="relative text-center mb-6">
+                             <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                 <div className="w-full border-t border-gray-200"></div>
+                             </div>
+                             <div className="relative flex justify-center">
+                                 <span className="bg-white px-4 text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--brand-green)' }}>
+                                     <i className="ph-squares-four text-yellow-500"></i> Categorias
+                                 </span>
+                             </div>
+                         </div>
+                         <div className="flex gap-3 mb-6 justify-start overflow-x-auto pb-2 no-scrollbar">
+                             {allCategories.map(cat => {
+                                 const isActive = (activeCategory === null && cat === 'Todas') || activeCategory === cat;
+                                 const iconData = CATEGORY_ICONS_DATA[cat] || { src: '', alt: '' };
+                                 return (
+                                     <button 
+                                         key={cat} 
+                                         onClick={() => setActiveCategory(cat === 'Todas' ? null : cat)}
+                                         className={`flex items-center flex-shrink-0 gap-2 px-4 py-2 text-sm font-semibold rounded-full border-2 transition-all duration-200 ${isActive ? 'bg-green-600 text-white border-transparent shadow-md transform scale-105' : 'bg-white text-gray-700 border-gray-200 hover:border-green-500 hover:text-green-600'}`}
+                                     >
+                                         <CategoryIcon src={iconData.src} alt={iconData.alt} isActive={isActive} />
+                                         <span>{cat}</span>
+                                     </button>
+                                 );
+                             })}
+                         </div>
+                         <div className="flex flex-col md:flex-row gap-4 items-center mb-4">
+                            <div className="relative flex-grow flex items-center group w-full">
+                                <input ref={searchInputRef} type="text" placeholder="Buscar por nome ou sabor..." onChange={(e) => setQuery(e.target.value)} className="w-full pl-6 pr-14 py-4 bg-gray-5 border border-gray-300 text-gray-900 rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-shadow group-hover:shadow-md" />
+                                <button className="absolute right-2 bg-green-600 text-white p-3 rounded-full hover:bg-green-700 transition-colors shadow-sm">
+                                    <IconLupa />
+                                </button>
+                            </div>
+
+                            {/* MODERN TOGGLE SWITCH COMPONENT */}
+                            <div className="flex items-center gap-3 bg-gray-50 px-5 py-3 rounded-full border border-gray-200 whitespace-nowrap shadow-sm">
+                                <span className="text-sm font-bold text-gray-700 select-none">Mostrar Preços</span>
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input 
+                                        type="checkbox" 
+                                        className="sr-only peer"
+                                        checked={showPrices}
+                                        onChange={() => setShowPrices(!showPrices)}
+                                    />
+                                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                </label>
+                            </div>
+                         </div>
+                         
+                         { (query || activeCategory) && (
+                            <div className="mt-4 text-center">
+                                <button onClick={handleClearSearch} className="text-sm font-semibold text-green-700 bg-white px-4 py-2 rounded-full shadow-md hover:bg-gray-100 transition-all border border-green-200 flex items-center gap-2 mx-auto">
+                                    <i className="ph-arrow-counter-clockwise"></i> Limpar Filtros e Voltar
+                                </button>
+                            </div>
+                         )}
+                     </div>
+                    
+                    {/* Products Section */}
+                    {groupedProducts.map(group => {
+                        const categoryContent = (
+                            <>
+                                {!query && !activeCategory && group.category === 'Bebidas não alcoólicas' && (
+                                    <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6 mb-8 flex flex-col gap-4">
+                                        <div className="text-center">
+                                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold flex items-center justify-center gap-2" style={{color: 'var(--brand-green)'}}>
+                                                <i className="ph-drop text-blue-500"></i> ISM Brasil: portfólio de alto giro.
+                                            </h3>
+                                            <p className="text-sm sm:text-base md:text-lg font-semibold mt-2 text-gray-600">
+                                                Multinacional presente em 7 países, com fábrica em Alagoinhas-BA.
+                                            </p>
+                                        </div>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <img src="https://i.ibb.co/PvnmNKKw/100.jpg" alt="100" className="rounded-2xl w-full h-auto object-contain hover:shadow-lg transition-shadow" />
+                                            <img src="https://i.ibb.co/MkBdYQ1Z/484319138-122166789608286629-3240958178884466690-n.jpg" alt="484319138-122166789608286629-3240958178884466690-n" className="rounded-2xl w-full h-auto object-contain hover:shadow-lg transition-shadow" />
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {!query && !activeCategory && group.category === 'Bebidas alcoólicas' && (
+                                    <div className="mb-8">
+                                        <div className="relative">
+                                            <div className="rounded-t-3xl shadow-lg overflow-hidden mt-4" style={{ backgroundColor: '#042f15' }}>
+                                                <img src="https://i.ibb.co/Vp9Pshb4/IMG-0863.jpg" alt="Novas Cervejas" className="w-full h-auto block hover:scale-105 transition-transform duration-700" onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/1200x300/1f2937/ffffff?text=Banner+Indisponível'; }}/>
+                                                <div style={{ height: '20px' }}></div>
+                                            </div>
+                                        </div>
+                                        <div className="wavy-top-connector rounded-b-3xl shadow-lg p-6 md:p-8 pt-10 relative z-10 bg-white">
+                                            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-2" style={{ color: 'var(--brand-green)' }}>Brussels Puro Malte</h3>
+                                            <p className="text-center text-gray-600 mb-6 max-w-3xl mx-auto text-sm sm:text-base">A cerveja que se tornou febre nas redes sociais.</p>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                                                <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-gray-50 border hover:shadow-md transition-shadow"><img src="https://i.ibb.co/bjWqn9kf/lager.jpg" alt="Lager" className="w-24 h-auto object-contain flex-shrink-0" /><div className="text-center sm:text-left"><h4 className="font-bold text-xl sm:text-2xl" style={{ color: 'var(--brand-green)' }}>Lager</h4><p className="text-gray-700 font-medium text-sm sm:text-base">puro malte leve e refrescante</p></div></div>
+                                                <div className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl bg-gray-50 border hover:shadow-md transition-shadow"><img src="https://i.ibb.co/5hq6TQHP/ultra.jpg" alt="Ultra" className="w-24 h-auto object-contain flex-shrink-0" /><div className="text-center sm:text-left"><h4 className="font-bold text-xl sm:text-2xl" style={{ color: '#1e3a8a' }}>Ultra</h4><p className="text-gray-700 font-medium text-sm sm:text-base">Puro malte zero açúcar</p></div></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-6 flex items-center gap-4 justify-start" style={{textShadow: '1px 1px 3px rgba(0,0,0,0.5)'}}>
+                                    <div className="bg-white p-2 rounded-full shadow-md">
+                                        <CategoryIcon src={CATEGORY_ICONS_DATA[group.category]?.src} alt={CATEGORY_ICONS_DATA[group.category]?.alt} isActive={false} size="w-8 h-8 sm:w-10 sm:h-10" />
+                                    </div>
+                                    {group.category}
+                                </h2>
+
+                                <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6">
+                                    {loading ? (
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+                                            {Array.from({ length: 4 }).map((_, i) => <ProductCardSkeleton key={i} />)}
+                                        </div>
+                                    ) : !group.products.length ? null : (
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6">
+                                            {group.products.map(p => <ProductCard key={p.id} product={p} onProductClick={onProductClick} showPrices={showPrices} />)}
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        );
+
+                        return (
+                            <div className="mb-12" key={group.category}>
+                                <div className="category-wave-wrapper">
+                                    <div className="category-content">{categoryContent}</div>
+                                </div>
+                            </div>
+                        )
+                    })}
+
+                     {!loading && groupedProducts.length === 0 && (query || activeCategory) && (
+                         <div className="text-center py-16 px-6 bg-white rounded-3xl shadow-lg">
+                             <h3 className="text-3xl font-bold text-gray-700">Ops!</h3>
+                             <p className="text-gray-500 mt-2 text-lg max-w-md mx-auto">
+                                 Não encontramos nenhum produto com "{query}". Que tal tentar um termo diferente?
+                             </p>
+                         </div>
+                    )}
+                    
+                    {!query && !activeCategory && (
+                        <div className="my-10">
+                            <div className="bg-white p-6 sm:p-8 rounded-3xl shadow-lg text-center border-4 border-green-600 bg-opacity-95">
+                                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4" style={{color: 'var(--brand-green)'}}>
+                                    Obrigado pela sua visita!
+                                </h2>
+                                <p className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-600">
+                                    Estamos prontos para atender você neste verão com os melhores produtos e preços.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        
+        // --- Main App Component ---
+        const App = () => {
+            const [catalog, setCatalog] = useState({ products: [], settings: { categoriesOrder: [] } });
+            const [loading, setLoading] = useState(true);
+            const [query, setQuery] = useState('');
+            const [activeCategory, setActiveCategory] = useState(null);
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [showPrices, setShowPrices] = useState(true);
+
+            const handleProductClick = (product) => {
+                setSelectedProduct(product);
+            };
+
+            const handleCloseModal = () => {
+                setSelectedProduct(null);
+            };
+
+            useEffect(() => {
+                setLoading(true);
+                api.getCatalog({ q: query, category: activeCategory }).then(data => {
+                    setCatalog(data);
+                    setLoading(false);
+                });
+            }, [query, activeCategory]);
+            
+            const groupedProducts = catalog.settings.categoriesOrder
+                .map(category => ({
+                    category,
+                    products: catalog.products.filter(p => p.category === category).sort((a,b) => a.sortOrder - b.sortOrder)
+                }))
+                .filter(group => group.products.length > 0);
+            
+            const allCategories = ['Todas', ...catalog.settings.categoriesOrder];
+
+            return (
+                <div>
+                    <Header />
+                    <main>
+                       <HomePage
+                           loading={loading}
+                           groupedProducts={groupedProducts}
+                           allCategories={allCategories}
+                           activeCategory={activeCategory}
+                           setActiveCategory={setActiveCategory}
+                           setQuery={setQuery}
+                           onProductClick={handleProductClick}
+                           query={query}
+                           showPrices={showPrices}
+                           setShowPrices={setShowPrices}
+                       />
+                    </main>
+                    <Footer />
+                    <ProductDetailModal product={selectedProduct} onClose={handleCloseModal} showPrices={showPrices} />
+                </div>
+            );
+        };
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
